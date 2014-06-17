@@ -150,6 +150,11 @@ void Object::calcPhiRating(){
   double width = maxX-minX;
   double height = maxZ-minZ;
   double depth = maxY-minY;
+  /*
+  if(width == 0)cout << "No width" <<endl;
+  if(depth == 0)cout << "No depth" <<endl;
+  if(height == 0)cout << "No height" <<endl;
+  */
   phiRating = abs((PHI - (width/height))+(PHI - (depth/width)));
 }
 

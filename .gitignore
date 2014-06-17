@@ -24,3 +24,6 @@ MOGABERG
 # Data
 *.csv
 *.scad
+
+#emacs backups
+*~

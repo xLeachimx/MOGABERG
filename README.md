@@ -1,4 +1,4 @@
-GeneticSharing
+MOGABERG
 ==============
 
-A new implementation of CGA's using gentic sharing
+A MOGA for determining beauty in voxel based systems

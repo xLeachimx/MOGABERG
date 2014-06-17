@@ -22,7 +22,6 @@ Object::Object(){
 Object::Object(voxel copy[NUM_VOX]){
   for(int i = 0 ;i < NUM_VOX;i++){
     voxels[i] = copy[i];
-    applyTransform(voxels[i]);
   }
   connectivity = 0.0;
   phiRating = 0.0;
@@ -95,7 +94,6 @@ bool Object::operator!=(const Object &comp){
 Object &Object::operator=(const Object &copy){
   for(int i = 0 ;i < NUM_VOX;i++){
     voxels[i] = copy.voxels[i];
-    applyTransform(voxels[i]);
   }
   connectivity = copy.connectivity;
   phiRating = copy.phiRating;
@@ -103,18 +101,11 @@ Object &Object::operator=(const Object &copy){
   return *this;
 }
 
-void Object::applyTransform(voxel &v){
-  v.size = ((v.x + v.y + v.z)/3)|1;//ensures the size is at least 1
-  v.size = (v.size < 0)?-v.size:v.size;
-}
-
 void Object::calcConnectivity(){
   double connections = 0.0;
   for(int i = 0;i < NUM_VOX;i++){
     for(int j = 0;j < NUM_VOX;j++){
       if(i != j){
-	applyTransform(voxels[i]);
-	applyTransform(voxels[j]);
 	int comparedSize = voxels[i].size + voxels[j].size;
 	if(distance(i,j) < comparedSize)connections++;
       }
@@ -159,9 +150,6 @@ void Object::calcPhiRating(){
   double width = maxX-minX;
   double height = maxZ-minZ;
   double depth = maxY-minY;
-  if(width <= 0)cout << "No width" <<endl;
-  if(height <= 0)cout << "No height" <<endl;
-  if(depth <= 0)cout << "No depth" <<endl;
   phiRating = abs((PHI - (width/height))+(PHI - (depth/width)));
 }
 

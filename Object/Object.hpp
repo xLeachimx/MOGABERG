@@ -49,7 +49,6 @@ public:
   //simple assignment operator
   Object &operator=(const Object &copy);
 protected:
-  void applyTransform(voxel &v);//This is where the schema trasform happens
   void calcConnectivity();
   void calcPhiRating();
   bool pareToDominate(const Object &comp);//is this object pareto dominant over the comp object

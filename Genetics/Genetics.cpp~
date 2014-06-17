@@ -1,0 +1,14 @@
+Children crossover(Object &father, Object &mother){
+  int crossed = 0;
+  bool father = true;
+  voxel first[NUM_VOX];
+  voxel second[NUM_VOX];
+  for(int i = 0;i < NUM_VOX;i++){
+    if(rand()%100 < CROSS_PER && crossed < CROSS_POINTS){
+      father = !father;
+      crossed++;
+    }
+    first[i] = father?father.getVoxels[i]:mother.getVoxels[i];
+    second[i] = father?mother.getVoxels[i]:father.getVoxels[i];
+  }
+}

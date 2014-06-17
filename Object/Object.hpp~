@@ -1,0 +1,37 @@
+/*FILE: Object.hpp
+ *Author: Michael Huelsman
+ *Abstract:
+ *   A genetic object that expresses its genetic information in 3D voxels 
+ *
+ */
+
+struct voxel{
+  char x;
+  char y;
+  char z;
+  char size;
+};
+
+const int NUM_VOX = 300;
+const int CON_RATIO = 4; //Ratio for maximum connectivity
+const int PHI = 1.618033988749894848204586834365;
+
+class Object{
+public:
+  //constructors
+  Object();
+  Object(voxel copy[VOX_NUM]);
+  Object(const Object &copy);
+
+  voxel *getVoxels();
+
+  void calcQuaility();
+protected:
+  void applyTransform(voxel v);//This is where the schema trasform happens
+  void calcConnectivity();
+  void calcPhiRating();
+private:
+  voxel voxels[NUM_VOX];
+  int connectivity;
+  int phiRating;
+};

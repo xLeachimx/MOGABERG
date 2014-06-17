@@ -1,4 +1,4 @@
 MOGABERG
-========
+==============
 
-Multi-objective Genetic Algorithm for Beauty Emergently Rendered Genetically
+A MOGA for determining beauty in voxel based systems

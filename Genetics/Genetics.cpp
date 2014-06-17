@@ -38,9 +38,10 @@ void mutate(voxel v[], int size){
     if(rand()%1000 < MUTATION_PER){
       *mut = rand();
       char *mod = ((char *)mut);
-      v[i].x = mod[1];
-      v[i].y = mod[2];
-      v[i].z = mod[3];
+      v[i].x = mod[0];
+      v[i].y = mod[1];
+      v[i].z = mod[2];
+      v[i].size = mod[3];
     }
   }
   delete mut;

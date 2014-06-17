@@ -42,6 +42,8 @@ void mutate(voxel v[], int size){
       v[i].y = mod[1];
       v[i].z = mod[2];
       v[i].size = mod[3];
+      v[i].size = (v[i].size<0)?(-v[i].size):(v[i].size);//sizes should not be negative
+      v[i].size = (v[i].size==0)?1:v[i].size;//Minimal size is 1
     }
   }
   delete mut;

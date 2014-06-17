@@ -44,6 +44,8 @@ int main(int argc, char **argv){
       cloud[j].y = mod[1];
       cloud[j].z = mod[2];
       cloud[j].size = mod[3];
+      cloud[j].size = (cloud[i].size<0)?(-cloud[j].size):(cloud[j].size);//sizes should not be negative
+      cloud[j].size = (cloud[i].size==0)?1:cloud[j].size;//Minimal size is 1
     }
     generation[i] = Object(cloud);
   }

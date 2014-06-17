@@ -44,6 +44,9 @@ int main(int argc, char **argv){
       cloud[j].y = mod[1];
       cloud[j].z = mod[2];
       cloud[j].size = mod[3];
+      cloud[j].size = (cloud[j].size<0)?(-cloud[j].size):(cloud[j].size);//sizes should not be negative
+      cloud[j].size = (cloud[j].size==0)?1:cloud[j].size;//Minimal size is 1
+      if(cloud[j].size <= 0)cout << "Size problem" <<endl;
     }
     generation[i] = Object(cloud);
   }
@@ -73,7 +76,7 @@ int main(int argc, char **argv){
     for(int j = 0;j < ((GEN_SIZE-ELITISM)/2);j++){
       product = crossover(selection(generation,GEN_SIZE));
       nextGen[ELITISM+(2*j)] = product.first;
-      nextGen[ELITISM+(2*j)] = product.second;
+      nextGen[ELITISM+(2*j)+1] = product.second;
     }
     //copying generation over
     for(int j = 0;j < GEN_SIZE;j++){

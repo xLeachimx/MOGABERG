@@ -1,6 +1,6 @@
 COMPILEDFILES = Genetics.o Object.o
 TEMPFOLDER = TEMP
-PROGNAME = STGA
+PROGNAME = MOGABERG
 
 all: main
 

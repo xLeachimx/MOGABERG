@@ -40,10 +40,10 @@ int main(int argc, char **argv){
     for(int j = 0;j < NUM_VOX;j++){ 
       int generator = rand();
       char *mod = (char *)(&(generator));
-      cloud[j].x = mod[1];
-      cloud[j].y = mod[2];
-      cloud[j].z = mod[3];
-      cloud[j].size = 1;
+      cloud[j].x = mod[0];
+      cloud[j].y = mod[1];
+      cloud[j].z = mod[2];
+      cloud[j].size = mod[3];
     }
     generation[i] = Object(cloud);
   }

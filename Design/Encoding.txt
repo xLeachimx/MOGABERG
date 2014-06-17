@@ -1,0 +1,14 @@
+The two variables will be in play they are as follows:
+    1) Size
+    2) position
+For reference the voxels being used are spheres of varying sizes
+
+Position will be denoted by the use of three bytes:
+	 1) X
+	 2) Y
+	 3) Z
+The size of the voxel will be dtermined by the average of the X,Y,and Z using
+integer division
+
+Also size will be defined as ((X | Y) ^ Z). By using these bitwise operators size
+is also an unsigned character

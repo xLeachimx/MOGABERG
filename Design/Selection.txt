@@ -1,0 +1,15 @@
+	The selection of individuals for populations of the next generation wil
+be done as follows:
+
+Selection(generation):
+	sort generation by fitness
+	add top 2 individuals to nextGeneration
+	until(nextGeneration is full)
+			     isolate 20 individuals
+			     pick the top two individuals(out of 20)
+			     make two children from top individuals
+			     (mutate children)
+			     add children to nextGeneration
+
+The mating will be using single point crossover and voxels are the level of
+grainularity

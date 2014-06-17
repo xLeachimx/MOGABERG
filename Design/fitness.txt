@@ -1,0 +1,9 @@
+The quaility value of an individual will be accessed as follows:
+    	    The quality of connectivity will be the average amount of voxels
+	    that are in contact with one another the closer the average is to
+	    NUM_VOX/4 the better
+	    
+	    The quality of phiRating will be how calculated as follows:
+	    	(PHI-(depth/width))^2 + (PHI-(width/height))^2
+
+The fitness of a member will be the amount of pareto dominance that member has over other members   

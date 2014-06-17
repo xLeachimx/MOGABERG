@@ -1,4 +1,4 @@
-MOGABERG
-========
+GeneticSharing
+==============
 
-Multi-objective Genetic Algorithm for Beauty Emergently Rendered Genetically
+A new implementation of CGA's using gentic sharing

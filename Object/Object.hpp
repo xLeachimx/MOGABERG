@@ -34,9 +34,10 @@ public:
   int getConnectivity();
   int getPhiRating();
   void toCSV(ostream &out);//outputs quality values
+  void toScad(ostream &out);//outputs voxels to scad for viewing
 
   void calcQuality();
-  void calcFitness(Object *gen, int size, int skip);
+  void calcFitness(Object *gen, int size);//calculates fitness using amount of pareto dominances
 
   //conparative operators (they compare using pareto dominance over the connectivity and phiRating qualities)
   bool operator>(const Object &comp);

@@ -51,7 +51,16 @@ int Object::getPhiRating(){
 }
 
 void Object::toCSV(ostream &out){
-  out << connectivity << "," << phiRating << "," << fitness <<'\n';
+  out << connectivity << "," << phiRating << '\n';
+}
+
+void Object::toScad(ostream &out){
+  out << "//Connectivity:" << connectivity << endl;
+  out << "//Phi rating:" << phiRating << endl;
+  for(int i = 0;i < NUM_VOX;i++){
+    out << "translate([" << (int)voxels[i].x << "," << (int)voxels[i].y << "," << (int)voxels[i].z << "])";
+    out << "sphere(r=" << (int)voxels[i].size << ");" << endl;
+  }
 }
 
 void Object::calcQuality(){
@@ -150,12 +159,7 @@ void Object::calcPhiRating(){
   double width = maxX-minX;
   double height = maxZ-minZ;
   double depth = maxY-minY;
-  /*
-  if(width == 0)cout << "No width" <<endl;
-  if(depth == 0)cout << "No depth" <<endl;
-  if(height == 0)cout << "No height" <<endl;
-  */
-  phiRating = abs((PHI - (width/height))+(PHI - (depth/width)));
+  phiRating = abs((PHI - (width/height)))+abs((PHI - (depth/width)));
 }
 
 bool Object::pareToDominate(const Object &comp){

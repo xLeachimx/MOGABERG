@@ -9,6 +9,7 @@
 #include <cmath>
 using std::sqrt;
 using std::abs;
+using std::endl;
 
 Object::Object(){
   connectivity = 0.0;
@@ -65,10 +66,9 @@ void Object::calcQuality(){
   calcPhiRating();
 }
 
-void Object::calcFitness(Object *gen, int size, int skip){
+void Object::calcFitness(Object *gen, int size){
   fitness = 0;
   for(int i = 0;i < size;i++){
-    if(i == skip)continue;
     if(pareToDominate(gen[i]))fitness++;
   }
 }

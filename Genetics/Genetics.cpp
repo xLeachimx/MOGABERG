@@ -35,7 +35,7 @@ Children crossover(Parents p){
 void mutate(voxel v[], int size){
   int *mut = new int;
   for(int i = 0;i < size;i++){
-    if(rand()%1000 < MUTATION_PER){
+    if(rand()%100 < MUTATION_PER){
       *mut = rand();
       char *mod = ((char *)mut);
       v[i].x = mod[0];

@@ -44,7 +44,7 @@ int main(int argc, char **argv){
   }
 
   //record basic info
-  fout << "Number og generations," << NUM_GEN << endl;
+  fout << "Number of generations," << NUM_GEN << endl;
   fout << "Generation Size," << GEN_SIZE << endl;
   fout << "Elitism," << ELITISM << endl;
   fout << "Number of Voxels," << NUM_VOX << endl;
@@ -56,7 +56,6 @@ int main(int argc, char **argv){
   fout << "Generation,Top Connectivity,Top Phi Rating" << endl;
 
   //running the GA
-  Object nextGen[GEN_SIZE];
   for(int i = 0;i < NUM_GEN;i++){
     cout << i <<endl;
 
@@ -65,7 +64,7 @@ int main(int argc, char **argv){
       generation[j].calcQuality();
     }
     for(int j = 0;j < GEN_SIZE;j++){
-      generation[j].calcFitness(generation, GEN_SIZE, j);
+      generation[j].calcFitness(generation, GEN_SIZE);
     }
     genSort(generation,GEN_SIZE);//sort according to dominance
     
@@ -97,7 +96,7 @@ int main(int argc, char **argv){
     generation[j].calcQuality();
   }
   for(int j = 0;j < GEN_SIZE;j++){
-    generation[j].calcFitness(generation, GEN_SIZE, j);
+    generation[j].calcFitness(generation, GEN_SIZE);
   }
   genSort(generation,GEN_SIZE);//sort according to dominance
 

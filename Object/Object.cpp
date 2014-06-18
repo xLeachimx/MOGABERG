@@ -7,11 +7,8 @@
 
 #include "Object.hpp"
 #include <cmath>
-#include <iostream>
 using std::sqrt;
 using std::abs;
-using std::cout;
-using std::endl;
 
 Object::Object(){
   connectivity = 0.0;

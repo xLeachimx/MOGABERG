@@ -2,6 +2,10 @@
  *Author:Michael Huelsman
  *Abstract:
  *   Main program of the STGA
+ *Notes:
+ *  The commandline needs 2 arguements:
+ *    1)Filename for the csv output of the program
+ *    2)Filename for the scad output of the program
  */
 #include <iostream>
 #include <fstream>

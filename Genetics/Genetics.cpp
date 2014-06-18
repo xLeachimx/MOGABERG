@@ -5,10 +5,8 @@
  */
 #include "Genetics.hpp"
 #include <cstdlib>
-#include <iostream>
 using std::rand;
-using std::cout;
-using std::endl;
+
 //needed subfuntions
 void randomize(Object gen[], int size, int cycles);
 void swap(Object &one, Object &two);
@@ -46,7 +44,6 @@ void mutate(voxel v[], int size){
       v[i].size = mod[3];
       v[i].size = (v[i].size<0)?(-v[i].size):(v[i].size);//sizes should not be negative
       v[i].size = (v[i].size==0)?1:v[i].size;//Minimal size is 1
-      if(v[i].size <= 0)cout << "size problem" <<endl;
     }
   }
   delete mut;

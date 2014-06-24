@@ -217,6 +217,29 @@ void Object::calcSymmetry(){
   }
 }
 
+void Object::calcComplexity(){
+  int outer = 0.0; //number of voxels inside the internal bounding box
+  double xInter = (bBox.xMax-bBox.xMin)/4.0; 
+  double yInter = (bBox.yMax-bBox.yMin)/4.0;
+  double zInter = (bBox.zMax-bBox.zMin)/4.0;
+  BoundingBox internal;
+  internal.xMin = bBox.xMin + xInter;
+  internal.xMax = bBox.xMin + (3*xInter);
+  internal.yMin = bBox.yMin + yInter;
+  internal.yMax = bBox.yMin + (3*yInter);
+  internal.zMin = bBox.zMin + zInter;
+  internal.zMax = bBox.zMin + (3*zInter);
+  outer = NUM_VOX;
+  for(int i = 0;i < NUM_VOX;i++){
+    if(voxels[i].x-voxels[i].size >= internal.xMin && voxels[i].x+voxels[i].size <= internal.xMax){
+      if(voxels[i].y-voxels[i].size >= internal.yMin && voxels[i].y+voxels[i].size <= internal.yMax){
+	if(voxels[i].z-voxels[i].size >= internal.zMin && voxels[i].z+voxels[i].size <= internal.zMax)outer--;
+      }
+    }
+  }
+  complexity = abs(5-(((double)NUM_VOX-outer)/((double)outer)));
+}
+
 bool Object::pareToDominate(const Object &comp){
   if(connectivity <= comp.connectivity && phiRating <= comp.phiRating){
     if(connectivity < comp.connectivity || phiRating < comp.phiRating)return true;

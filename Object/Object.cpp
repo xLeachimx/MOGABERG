@@ -113,7 +113,8 @@ void Object::calcConnectivity(){
     for(int j = 0;j < NUM_VOX;j++){
       if(i != j){
 	int comparedSize = voxels[i].size + voxels[j].size;
-	if(distance(i,j) < comparedSize)connections++;
+	double distanceBetween = distance(i,j);
+	if((distanceBetween < comparedSize) && (distanceBetween+voxels[j].size > voxels[i].size))connections++;
       }
     }
   }

@@ -18,7 +18,16 @@ struct voxel{
   char size;
 };
 
-const int NUM_VOX = 30;
+struct BoundingBox{
+  int xMax;
+  int xMin;
+  int yMax;
+  int yMin;
+  int zMax;
+  int zMin;
+};
+
+const int NUM_VOX = 100;
 const double CON_RATIO = 4.0; //Ratio for maximum connectivity
 const int PHI = 1.618033988;
 
@@ -50,14 +59,20 @@ public:
   //simple assignment operator
   Object &operator=(const Object &copy);
 protected:
+  void calcBoundBox();
   void calcConnectivity();
   void calcPhiRating();
+  void calcSymmetry();
+  void calcComplexity();
   bool pareToDominate(const Object &comp);//is this object pareto dominant over the comp object
-  double distance(int one,int two);//finds the distance between two voxels
+  double distance(voxel &one,voxel &two);//finds the distance between two voxels
 private:
   voxel voxels[NUM_VOX];
+  BoundingBox bBox;
   double connectivity;
   double phiRating;
+  double symmetry;
+  double complexity;
   int fitness;
 };
 

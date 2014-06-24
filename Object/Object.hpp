@@ -59,7 +59,7 @@ public:
   //simple assignment operator
   Object &operator=(const Object &copy);
 protected:
-  void calcBoundBox();
+  void calcBoundingBox();
   void calcConnectivity();
   void calcPhiRating();
   void calcSymmetry();

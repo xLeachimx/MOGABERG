@@ -224,9 +224,9 @@ bool Object::pareToDominate(const Object &comp){
   return false;
 }
 
-double Object::distance(int one, int two){
-  double x = (double)((int)voxels[one].x-(int)voxels[two].x);
-  double y = (double)((int)voxels[one].y-(int)voxels[two].y);
-  double z = (double)((int)voxels[one].z-(int)voxels[two].z);
+double Object::distance(voxel &one, voxel &two){
+  double x = (double)((int)one.x-(int)two.x);
+  double y = (double)((int)one.y-(int)two.y);
+  double z = (double)((int)one.z-(int)two.z);
   return sqrt((x*x) + (y*y) + (z*z));
 }

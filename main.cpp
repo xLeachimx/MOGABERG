@@ -66,7 +66,6 @@ int main(int argc, char **argv){
     
     //running the GA
     for(int i = 0;i < NUM_GEN;i++){
-      cout << i <<endl;
       
       //calculate  the fitness of all objects
       for(int j = 0;j < GEN_SIZE;j++){

@@ -12,10 +12,15 @@
 using std::ostream;
 
 struct voxel{
-  char x;
-  char y;
-  char z;
-  char size;
+  double x;
+  double y;
+  double z;
+};
+
+struct vector{
+  double x;
+  double y;
+  double z;
 };
 
 struct BoundingBox{
@@ -28,6 +33,9 @@ struct BoundingBox{
 };
 
 const int NUM_VOX = 100;
+const int ENCODED_SIZE = (NUM_VOX-1)*4;
+const int DISP_FACTOR = 0x80;
+const int VOX_SIZE = 1;
 const double CON_RATIO = 4.0; //Ratio for maximum connectivity
 const int PHI = 1.618033988;
 
@@ -35,13 +43,11 @@ class Object{
 public:
   //constructors
   Object();
-  Object(voxel copy[NUM_VOX]);
+  Object(char rep[], int size);
   Object(const Object &copy);
 
   //accessors
-  voxel *getVoxels();
-  int getConnectivity();
-  int getPhiRating();
+  char *getEncoding();
   void toCSV(ostream &out);//outputs quality values
   void toScad(ostream &out);//outputs voxels to scad for viewing
 
@@ -60,16 +66,22 @@ public:
   Object &operator=(const Object &copy);
 protected:
   void calcBoundingBox();
-  void calcConnectivity();
   void calcPhiRating();
   void calcSymmetry();
   void calcComplexity();
   bool pareToDominate(const Object &comp);//is this object pareto dominant over the comp object
   double distance(voxel &one,voxel &two);//finds the distance between two voxels
+
+  //vector maths
+  void makeUnit(vector &v);
+  void scalarMult(vector &v, double scale);
+
+  //Supplemental functions
+  void generateVoxels();
 private:
   voxel voxels[NUM_VOX];
+  char encoding[ENCODED_SIZE];
   BoundingBox bBox;
-  double connectivity;
   double phiRating;
   double symmetry;
   double complexity;

@@ -241,8 +241,8 @@ void Object::calcComplexity(){
 }
 
 bool Object::pareToDominate(const Object &comp){
-  if(connectivity <= comp.connectivity && phiRating <= comp.phiRating){
-    if(connectivity < comp.connectivity || phiRating < comp.phiRating)return true;
+  if(connectivity <= comp.connectivity && phiRating <= comp.phiRating && complexity <= comp.complexity && symmetry <= comp.symmetry){
+    if(connectivity < comp.connectivity || phiRating < comp.phiRating || complexity < comp.complexity || symmetry <= comp.symmetry)return true;
   }
   return false;
 }

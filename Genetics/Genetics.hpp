@@ -27,7 +27,7 @@ struct Parents{
 
 
 Children crossover(Parents p);
-void mutate(voxel v[], int size);
+void mutate(char v[], int size);
 Parents selection(Object gen[], int size);
 void genSort(Object *gen, int size);
 

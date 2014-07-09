@@ -23,7 +23,7 @@ using std::time;
 const int NUM_GEN = 1000;
 const int GEN_SIZE = 100;
 const int ELITISM = 2;
-const int RUNS = 1000;
+const int RUNS = 1;
 
 void primSoup(Object generation[], int size);//generates a random first generation
 
@@ -45,7 +45,7 @@ int main(int argc, char **argv){
   }
 
   for(int run = 0; run < RUNS;run++){
-    cout << "Run:" << run << " of " << RUNS <<endl;
+    cout << "Run:" << run+1 << " of " << RUNS <<endl;
     //setup
     unsigned int seed = time(NULL);
     srand(seed);
@@ -62,7 +62,7 @@ int main(int argc, char **argv){
     //primordial soup generator
     primSoup(generation, GEN_SIZE);
     
-    fout << "Generation,Top Connectivity,Top Phi Rating" << endl;
+    fout << "Generation,Top Phi Rating,Top Complexity,Top Symmetry" << endl;
     
     //running the GA
     for(int i = 0;i < NUM_GEN;i++){
@@ -121,6 +121,7 @@ int main(int argc, char **argv){
 	return 0;
       }
       generation[0].toScad(out);
+      out.close();
     }
   }
   fout.close();
@@ -128,19 +129,12 @@ int main(int argc, char **argv){
 }
 
 void primSoup(Object generation[], int size){
-  voxel cloud[NUM_VOX];
+  char cloud[ENCODED_SIZE];
   int generator;
   for(int i = 0;i < size;i++){
-    for(int j = 0;j < NUM_VOX;j++){ 
-      int generator = rand();
-      char *mod = (char *)(&(generator));
-      cloud[j].x = mod[0];
-      cloud[j].y = mod[1];
-      cloud[j].z = mod[2];
-      cloud[j].size = mod[3];
-      cloud[j].size = (cloud[j].size<0)?(-cloud[j].size):(cloud[j].size);//sizes should not be negative
-      cloud[j].size = (cloud[j].size==0)?1:cloud[j].size;//Minimal size is 1
+    for(int j = 0;j < ENCODED_SIZE;j++){
+      cloud[j] = (char)rand();
     }
-    generation[i] = Object(cloud);
+    generation[i] = Object(cloud,ENCODED_SIZE);
   }
 }

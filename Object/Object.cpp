@@ -7,9 +7,11 @@
 
 #include "Object.hpp"
 #include <cmath>
+#include <iostream>
 using std::sqrt;
 using std::abs;
 using std::endl;
+using std::cout;
 
 Object::Object(){
   phiRating = 0.0;
@@ -57,6 +59,7 @@ void Object::toScad(ostream &out){
   out << "//Symmetry:" << symmetry <<endl;
   out << "hull(){" << endl;
   for(int i = 0;i < NUM_VOX;i++){
+	cout << i << endl;
     out << "\ttranslate([" << voxels[i].x << "," << voxels[i].y << "," << voxels[i].z << "])" <<endl;
     out << "\t\tsphere(r=" << VOX_SIZE << ");" << endl;
   }
@@ -219,8 +222,8 @@ void Object::calcComplexity(){
 }
 
 bool Object::pareToDominate(const Object &comp){
-  if(connectivity <= comp.connectivity && phiRating <= comp.phiRating && complexity <= comp.complexity && symmetry <= comp.symmetry){
-    if(connectivity < comp.connectivity || phiRating < comp.phiRating || complexity < comp.complexity || symmetry <= comp.symmetry)return true;
+  if(phiRating <= comp.phiRating && complexity <= comp.complexity && symmetry <= comp.symmetry){
+    if(phiRating < comp.phiRating || complexity < comp.complexity || symmetry <= comp.symmetry)return true;
   }
   return false;
 }

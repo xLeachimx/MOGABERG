@@ -14,39 +14,30 @@ void swap(Object &one, Object &two);
 Children crossover(Parents p){
   int crossed = 0;
   bool father = true;
-  voxel first[NUM_VOX];
-  voxel second[NUM_VOX];
+  char first[ENCODED_SIZE];
+  char second[ENCODED_SIZE];
   for(int i = 0;i < NUM_VOX;i++){
     if(crossed < CROSS_POINTS && rand()%100 < CROSS_PER){
       father = !father;
       crossed++;
     }
-    first[i] = father?p.father.getVoxels()[i]:p.mother.getVoxels()[i];
-    second[i] = father?p.mother.getVoxels()[i]:p.father.getVoxels()[i];
+    first[i] = father?p.father.getEncoding()[i]:p.mother.getEncoding()[i];
+    second[i] = father?p.mother.getEncoding()[i]:p.father.getEncoding()[i];
   }
-  mutate(first,NUM_VOX);
-  mutate(second,NUM_VOX);
+  mutate(first,ENCODED_SIZE);
+  mutate(second,ENCODED_SIZE);
   Children result;
-  result.first = Object(first);
-  result.second = Object(second);
+  result.first = Object(first,ENCODED_SIZE);
+  result.second = Object(second,ENCODED_SIZE);
   return result;
 }
 
-void mutate(voxel v[], int size){
-  int *mut = new int;
+void mutate(char v[], int size){
   for(int i = 0;i < size;i++){
     if(rand()%100 < MUTATION_PER){
-      *mut = rand();
-      char *mod = ((char *)mut);
-      v[i].x = mod[0];
-      v[i].y = mod[1];
-      v[i].z = mod[2];
-      v[i].size = mod[3];
-      v[i].size = (v[i].size<0)?(-v[i].size):(v[i].size);//sizes should not be negative
-      v[i].size = (v[i].size==0)?1:v[i].size;//Minimal size is 1
+      v[i] = (char)rand();
     }
   }
-  delete mut;
 }
 
 Parents selection(Object gen[], int size){

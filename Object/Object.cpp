@@ -59,7 +59,6 @@ void Object::toScad(ostream &out){
   out << "//Symmetry:" << symmetry <<endl;
   out << "hull(){" << endl;
   for(int i = 0;i < NUM_VOX;i++){
-	cout << i << endl;
     out << "\ttranslate([" << voxels[i].x << "," << voxels[i].y << "," << voxels[i].z << "])" <<endl;
     out << "\t\tsphere(r=" << VOX_SIZE << ");" << endl;
   }

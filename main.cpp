@@ -21,7 +21,7 @@ using std::time;
 #include "Genetics.hpp"
 
 const int NUM_GEN = 1000;
-const int GEN_SIZE = 100;
+const int GEN_SIZE = 1000;
 const int ELITISM = 2;
 const int RUNS = 1;
 
@@ -56,7 +56,6 @@ int main(int argc, char **argv){
     fout << "Number of generations," << NUM_GEN << endl;
     fout << "Generation Size," << GEN_SIZE << endl;
     fout << "Elitism," << ELITISM << endl;
-    fout << "Number of Voxels," << NUM_VOX << endl;
     fout << "Seed," << seed <<endl;
     
     //primordial soup generator
@@ -129,12 +128,17 @@ int main(int argc, char **argv){
 }
 
 void primSoup(Object generation[], int size){
-  char cloud[ENCODED_SIZE];
+  char *cloud;
   int generator;
   for(int i = 0;i < size;i++){
-    for(int j = 0;j < ENCODED_SIZE;j++){
+    int eSize = rand()%100;
+    eSize += 10;
+    eSize = eSize*4;
+    cloud = new char[eSize];
+    for(int j = 0;j < eSize;j++){
       cloud[j] = (char)rand();
     }
-    generation[i] = Object(cloud,ENCODED_SIZE);
+    generation[i] = Object(cloud,eSize);
+    delete[] cloud;
   }
 }

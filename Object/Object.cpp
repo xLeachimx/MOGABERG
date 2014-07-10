@@ -14,6 +14,10 @@ using std::endl;
 using std::cout;
 
 Object::Object(){
+  voxels = 0;
+  numVox = 0;
+  encoding = 0;
+  encodingSize = 0;
   phiRating = 0.0;
   complexity = 0.0;
   symmetry = 0.0;
@@ -21,9 +25,13 @@ Object::Object(){
 }
 
 Object::Object(char rep[], int size){
+  encoding = new char[size];
   for(int i = 0 ;i < size;i++){
     encoding[i] = rep[i];
   }
+  encodingSize = size;
+  numVox = (encodingSize/4)+1;
+  voxels = new voxel[numVox];
   generateVoxels();
   phiRating = 0.0;
   complexity = 0.0;
@@ -32,10 +40,14 @@ Object::Object(char rep[], int size){
 }
 
 Object::Object(const Object &copy){
-  for(int i = 0;i < NUM_VOX;i++){
+  numVox = copy.numVox;
+  encodingSize = copy.encodingSize;
+  voxels = new voxel[numVox];
+  encoding = new char[encodingSize];
+  for(int i = 0;i < numVox;i++){
     voxels[i] = copy.voxels[i];
   }
-  for(int i = 0;i < ENCODED_SIZE;i++){
+  for(int i = 0;i < encodingSize;i++){
     encoding[i] = copy.encoding[i];
   }
   phiRating = copy.phiRating;
@@ -44,9 +56,21 @@ Object::Object(const Object &copy){
   fitness = copy.fitness;
 }
 
+Object::~Object(){
+  if(voxels)delete[] voxels;
+  if(encoding)delete[] encoding;
+}
 
 char *Object::getEncoding(){
   return encoding;
+}
+
+int Object::getNumVox(){
+  return numVox;
+}
+
+int Object::getEncodingSize(){
+  return encodingSize;
 }
 
 void Object::toCSV(ostream &out){
@@ -58,7 +82,7 @@ void Object::toScad(ostream &out){
   out << "//Complexity:" << complexity <<endl;
   out << "//Symmetry:" << symmetry <<endl;
   out << "hull(){" << endl;
-  for(int i = 0;i < NUM_VOX;i++){
+  for(int i = 0;i < numVox;i++){
     out << "\ttranslate([" << voxels[i].x << "," << voxels[i].y << "," << voxels[i].z << "])" <<endl;
     out << "\t\tsphere(r=" << VOX_SIZE << ");" << endl;
   }
@@ -104,10 +128,16 @@ bool Object::operator!=(const Object &comp){
 }
 
 Object &Object::operator=(const Object &copy){
-  for(int i = 0 ;i < NUM_VOX;i++){
+  if(voxels)delete[] voxels;
+  if(encoding)delete[] encoding;
+  numVox = copy.numVox;
+  encodingSize = copy.encodingSize;
+  voxels = new voxel[numVox];
+  encoding = new char[encodingSize];
+  for(int i = 0 ;i < numVox;i++){
     voxels[i] = copy.voxels[i];
   }
-  for(int i = 0;i < ENCODED_SIZE;i++){
+  for(int i = 0;i < encodingSize;i++){
     encoding[i] = copy.encoding[i];
   }
   phiRating = copy.phiRating;
@@ -163,7 +193,7 @@ void Object::calcPhiRating(){
 //tests for symmetry accross the planes: x=0, y=0, and z=0
 void Object::calcSymmetry(){
   symmetry = 0.0;
-  for(int i = 0;i < NUM_VOX;i++){
+  for(int i = 0;i < numVox;i++){
     voxel antiX, antiY, antiZ;
     antiX = antiY = antiZ = voxels[i];
     antiX.x = -antiX.x;
@@ -175,7 +205,7 @@ void Object::calcSymmetry(){
     double yDist = distance(xClosest,antiY);
     voxel zClosest = voxels[0];
     double zDist = distance(xClosest,antiZ);
-    for(int j = 1; j < NUM_VOX;j++){
+    for(int j = 1; j < numVox;j++){
       //closest object to hypothetical reflection on xAxis
       if(xDist > distance(antiX,voxels[j])){
 	xClosest = voxels[j];
@@ -209,20 +239,20 @@ void Object::calcComplexity(){
   internal.yMax = bBox.yMin + (3*yInter);
   internal.zMin = bBox.zMin + zInter;
   internal.zMax = bBox.zMin + (3*zInter);
-  outer = NUM_VOX;
-  for(int i = 0;i < NUM_VOX;i++){
+  outer = numVox;
+  for(int i = 0;i < numVox;i++){
     if(voxels[i].x-VOX_SIZE >= internal.xMin && voxels[i].x+VOX_SIZE <= internal.xMax){
       if(voxels[i].y-VOX_SIZE >= internal.yMin && voxels[i].y+VOX_SIZE <= internal.yMax){
 	if(voxels[i].z-VOX_SIZE >= internal.zMin && voxels[i].z+VOX_SIZE <= internal.zMax)outer--;
       }
     }
   }
-  complexity = abs(5-(((double)NUM_VOX-outer)/((double)outer)));
+  complexity = abs(5-(((double)numVox-outer)/((double)outer)));
 }
 
 bool Object::pareToDominate(const Object &comp){
   if(phiRating <= comp.phiRating && complexity <= comp.complexity && symmetry <= comp.symmetry){
-    if(phiRating < comp.phiRating || complexity < comp.complexity || symmetry <= comp.symmetry)return true;
+    if(phiRating < comp.phiRating || complexity < comp.complexity || symmetry < comp.symmetry)return true;
   }
   return false;
 }
@@ -237,6 +267,7 @@ double Object::distance(voxel &one, voxel &two){
 
 void Object::makeUnit(vector &v){
   double mag = sqrt((v.x*v.x) + (v.y*v.y) + (v.z*v.z));
+  if(mag == 0)return;
   v.x = v.x/mag;
   v.y = v.y/mag;
   v.z = v.z/mag;
@@ -254,7 +285,7 @@ void Object::generateVoxels(){
   temp.y = 0.0;
   temp.z = 0.0;
   voxels[0] = temp;
-  for(int i = 0;i < NUM_VOX-1;i++){
+  for(int i = 0;i < numVox-1;i++){
     int accessMod = 4*i;
     vector vec;
     vec.x = (double)encoding[accessMod];
@@ -262,7 +293,7 @@ void Object::generateVoxels(){
     vec.z = (double)encoding[accessMod+2];
     double disp = (double)encoding[accessMod+3];
     disp = disp/DISP_FACTOR;
-    disp += 1;
+    disp += VOX_SIZE;
     makeUnit(vec);
     scalarMult(vec, disp);
     temp.x = voxels[i].x+vec.x;

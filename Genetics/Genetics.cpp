@@ -12,32 +12,72 @@ void randomize(Object gen[], int size, int cycles);
 void swap(Object &one, Object &two);
 
 Children crossover(Parents p){
-  int crossed = 0;
-  bool father = true;
-  char first[ENCODED_SIZE];
-  char second[ENCODED_SIZE];
-  for(int i = 0;i < NUM_VOX;i++){
-    if(crossed < CROSS_POINTS && rand()%100 < CROSS_PER){
-      father = !father;
-      crossed++;
-    }
-    first[i] = father?p.father.getEncoding()[i]:p.mother.getEncoding()[i];
-    second[i] = father?p.mother.getEncoding()[i]:p.father.getEncoding()[i];
+  char *first = new char[p.mother.getEncodingSize()];
+  char *second = new char[p.father.getEncodingSize()];
+  int minSize = (p.father.getEncodingSize() < p.mother.getEncodingSize())?p.father.getEncodingSize():p.mother.getEncodingSize();
+  int cross = rand()%(minSize/4);
+  cross = cross*4;
+  for(int i = 0;i < cross;i++){
+    first[i] = p.father.getEncoding()[i];
+    second[i] = p.mother.getEncoding()[i];
   }
-  mutate(first,ENCODED_SIZE);
-  mutate(second,ENCODED_SIZE);
+  for(int i = cross;i < p.mother.getEncodingSize();i++){
+    first[i] = p.mother.getEncoding()[i];
+  }
+  for(int i = cross;i < p.father.getEncodingSize();i++){
+    second[i] = p.father.getEncoding()[i];
+  }
+  int firstSize = mutate(first,p.mother.getEncodingSize());
+  int secondSize = mutate(second,p.father.getEncodingSize());
   Children result;
-  result.first = Object(first,ENCODED_SIZE);
-  result.second = Object(second,ENCODED_SIZE);
+  result.first = Object(first,firstSize);
+  result.second = Object(second,secondSize);
+  delete[] first;
+  delete[] second;
   return result;
 }
 
-void mutate(char v[], int size){
+int mutate(char *&v, int size){
   for(int i = 0;i < size;i++){
     if(rand()%100 < MUTATION_PER){
       v[i] = (char)rand();
     }
   }
+  if(rand()%200 < MUTATION_PER){
+    if(rand()%2 == 0){
+      if(size > 40){
+	//delete a voxel
+	char *temp = new char[size-4];
+	int deletion = rand()%(size-4);
+	int insert = 0;
+	for(int i = 0;i < size;i++){
+	  if(i>=deletion && i < deletion+4)continue;
+	  temp[insert++] = v[i];
+	}
+	char *sub = v;
+	delete[] sub;
+	v = temp;
+	size -= 4;
+      }
+    }
+    else{
+      if(size < 400){
+	//add a voxel
+	char *temp = new char[size+4];
+	for(int i = 0;i < size;i++){
+	  temp[i] = v[i];
+	}
+	for(int i = 0;i < 4;i++){
+	  temp[size+i] = (char)rand();
+	}
+	char *sub = v;
+	delete[] sub;
+	v = temp;
+	size += 4;
+      }
+    }
+  }
+  return size;
 }
 
 Parents selection(Object gen[], int size){

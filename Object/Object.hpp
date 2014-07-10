@@ -35,7 +35,7 @@ struct BoundingBox{
 const int NUM_VOX = 100;
 const int ENCODED_SIZE = (NUM_VOX-1)*4;
 const int DISP_FACTOR = 0x80;
-const int VOX_SIZE = 1;
+const int VOX_SIZE = 10;
 const double CON_RATIO = 4.0; //Ratio for maximum connectivity
 const int PHI = 1.618033988;
 
@@ -45,9 +45,13 @@ public:
   Object();
   Object(char rep[], int size);
   Object(const Object &copy);
+  ~Object();
 
   //accessors
   char *getEncoding();
+  int getNumVox();
+  int getEncodingSize();
+
   void toCSV(ostream &out);//outputs quality values
   void toScad(ostream &out);//outputs voxels to scad for viewing
 
@@ -79,8 +83,10 @@ protected:
   //Supplemental functions
   void generateVoxels();
 private:
-  voxel voxels[NUM_VOX];
-  char encoding[ENCODED_SIZE];
+  voxel *voxels;
+  int numVox;
+  char *encoding;
+  int encodingSize;
   BoundingBox bBox;
   double phiRating;
   double symmetry;
